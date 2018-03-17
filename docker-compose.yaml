@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  iperf-client:
+    build:
+      context: image
+    entrypoint: /root/entrypoint.bash "client"
+    container_name: iperf-client
+    networks:
+      traffic:
+      measure:
+    volumes:
+      - ./etc/flows:/root/share
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    stdin_open: true
+    tty: true
+
+  iperf-server:
+    build:
+      context: image
+    entrypoint: /root/entrypoint.bash "server"
+    container_name: iperf-server
+    networks:
+      traffic:
+      measure:
+    volumes:
+      - ./etc/flows:/root/share
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    stdin_open: true
+    tty: true
+
+  # measurement store, analysis & graphing infra
+  # TODO(tho) -- Diego, be patient -- not PATIENT ;-)
+
+networks:
+  traffic:
+  measure:
+
+# vim: ai ts=2 sw=2 et sts=2 ft=yaml
